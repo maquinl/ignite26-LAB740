@@ -46,7 +46,7 @@ The Human Persona helps your agent understand your values, goals, boundaries, co
 1. In Microsoft 365 Copilot, select **Agents** from the left navigation.
 2. Select **Create agent** or **New agent**.
 
-   ![Microsoft 365 Copilot with Agents and Create agent highlighted.](../img/create_agent.jpg)
+   ![Microsoft 365 Copilot with Agents and Create agent highlighted.](/img/create_agent.jpg)
 
 3. If Agent Builder opens with a prompt asking what you want to build, select **Skip** to configure the agent yourself.
 
