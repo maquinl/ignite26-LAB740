@@ -1,0 +1,19 @@
+{
+  "name": "ignite26-lab740-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "docs:dev": "node scripts/publish-lab.mjs && vitepress dev .",
+    "docs:build": "node scripts/publish-lab.mjs && vitepress build . && node scripts/verify-site.mjs",
+    "docs:preview": "vitepress preview .",
+    "test": "node --test scripts/publish-lab.test.mjs"
+  },
+  "devDependencies": {
+    "vitepress": "2.0.0-alpha.17",
+    "vue": "3.5.44"
+  }
+}
