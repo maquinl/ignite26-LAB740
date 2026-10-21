@@ -2,9 +2,10 @@ import assert from "node:assert/strict";
 import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { heroFile, sourceFile } from "./publish-lab.mjs";
+import { getSiteBase, heroFile, sourceFile } from "./publish-lab.mjs";
 
 const output = fileURLToPath(new URL("../.vitepress/dist/", import.meta.url));
+const base = getSiteBase(process.env.PAGES_BASE_PATH);
 const [home, workshop, notFound] = await Promise.all(
   ["index.html", "workshop.html", "404.html"].map((file) => readFile(path.join(output, file), "utf8")),
 );
@@ -19,8 +20,8 @@ for (const html of [home, workshop, notFound]) {
   assert.match(html.match(/<script\b[^>]*>/)?.[0] ?? "", /id="workshop-theme"/);
 }
 assert.match(home, /Start the workshop/);
-assert.match(home, /href="\/ignite26-LAB740\/workshop"/);
-assert.match(home, /src="\/ignite26-LAB740\/copilot\.png"/);
+assert.ok(home.includes(`href="${base}workshop"`), "The workshop link must use the deployment base path.");
+assert.ok(home.includes(`src="${base}copilot.png"`), "The hero image must use the deployment base path.");
 assert.doesNotMatch(home, /id="step-1-/);
 assert.deepEqual(await readFile(path.join(output, "copilot.png")), await readFile(heroFile));
 
@@ -36,8 +37,11 @@ for (const heading of source.matchAll(/^## (Step \d+): (.+)$/gm)) {
 const screenshots = [...workshop.matchAll(/<img\b[^>]*src="([^"]+)"/g)];
 assert.ok(screenshots.length > 0, "The guide must include its screenshots.");
 const images = [...home.matchAll(/<img\b[^>]*src="([^"]+)"/g), ...screenshots];
-for (const [, source] of images) {
-  assert.ok(source.startsWith("/ignite26-LAB740/"), `Unexpected image URL: ${source}`);
-  await access(path.join(output, ...decodeURIComponent(source.slice("/ignite26-LAB740/".length)).split("/")));
+const assets = [home, workshop, notFound].flatMap((html) =>
+  [...html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"]+)"/g)],
+);
+for (const [, source] of [...images, ...assets]) {
+  assert.ok(source.startsWith(base), `Asset URL must use the deployment base path: ${source}`);
+  await access(path.join(output, ...decodeURIComponent(source.slice(base.length)).split("/")));
 }
-console.log(`Verified the landing page, Lab01 workshop, Copilot hero, theme bootstrap, and ${images.length} image references.`);
+console.log(`Verified the landing page, Lab01 workshop, Copilot hero, theme bootstrap, ${images.length} image references, and script/style asset paths.`);

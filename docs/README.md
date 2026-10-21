@@ -15,7 +15,7 @@ npm --prefix docs ci
 npm --prefix docs run docs:dev
 ```
 
-Open the local URL printed by VitePress, including the `/ignite26-LAB740/` base path. Changes to the landing page, hero image, Lab01, or its screenshots refresh the preview.
+Open the local URL printed by VitePress, which defaults to the `/ignite26-LAB740/` base path. Changes to the landing page, hero image, Lab01, or its screenshots refresh the preview.
 
 ## Test and build
 
@@ -28,3 +28,17 @@ npm --prefix docs run docs:preview
 The build copies the landing page and Copilot hero image, converts lab-only URL formatting in the workshop, removes its link to the Lab00 account table, and copies only screenshots referenced by Lab01. All prompt text is preserved. Missing images or unhandled lab-only references fail the build.
 
 Generated content, cache, and output stay under `.vitepress/` and are ignored by Git.
+
+## Deployment paths
+
+The deployment workflow supplies `PAGES_BASE_PATH` from the site's configuration, so root-hosted sites and repository-path sites use the correct asset and navigation URLs automatically. An empty value or `/` builds at the domain root; `/ignite26-LAB740` builds under that project path. If the variable is unset, local development keeps the existing `/ignite26-LAB740/` default.
+
+To check a root-hosted build locally:
+
+```powershell
+$env:PAGES_BASE_PATH = "/"
+npm --prefix docs run docs:build
+npm --prefix docs run docs:preview
+```
+
+Remove `PAGES_BASE_PATH` from the shell environment and rebuild to return to the default path.
