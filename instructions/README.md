@@ -1,6 +1,6 @@
 # Attendee instructions
 
-<!-- IGNITE TEMPLATE PLACEHOLDER: remove this folder when the session has no attendee step-by-step guidance. -->
+Complete the labs in order:
 
-Use this folder for attendee step-by-step guidance, including self-paced
-instructions, for any session type.
+1. [Lab 00: Welcome to your lab environment](Lab00.md) — sign in to the virtual machine and choose your workshop account.
+2. [Lab 01: Build your strategic partner agent in Microsoft 365 Copilot](Lab01.md) — create your Human Persona and configure your agent.
