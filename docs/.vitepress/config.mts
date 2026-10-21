@@ -1,6 +1,6 @@
 import path from "node:path";
 import { defineConfig } from "vitepress";
-import { heroFile, homeFile, mediaDirectory, prepareSite, sourceFile } from "../scripts/publish-lab.mjs";
+import { getSiteBase, heroFile, homeFile, mediaDirectory, prepareSite, sourceFile } from "../scripts/publish-lab.mjs";
 
 const themeScript = `(() => {
   const param = new URLSearchParams(window.location.search).get("scoutTheme");
@@ -12,7 +12,7 @@ const themeScript = `(() => {
 export default defineConfig({
   title: "Build your AI Chief of Staff",
   description: "Create a Human Persona and build your strategic partner agent in Microsoft 365 Copilot.",
-  base: "/ignite26-LAB740/",
+  base: getSiteBase(process.env.PAGES_BASE_PATH),
   srcDir: ".vitepress/generated",
   cleanUrls: true,
   head: [["script", { id: "workshop-theme" }, themeScript]],

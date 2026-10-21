@@ -15,6 +15,13 @@ export const generatedDirectory = fileURLToPath(
 export const homeFile = fileURLToPath(new URL("../index.md", import.meta.url));
 export const heroFile = fileURLToPath(new URL("../public/copilot.png", import.meta.url));
 
+export function getSiteBase(basePath = "/ignite26-LAB740") {
+  if (basePath !== "" && !/^\/(?!\/)/.test(basePath)) {
+    throw new Error("PAGES_BASE_PATH must be empty or a path starting with a single slash.");
+  }
+  return `${basePath.replace(/\/+$/, "")}/`;
+}
+
 export function publishMarkdown(source) {
   const images = new Set();
   let markdown = source.replace(

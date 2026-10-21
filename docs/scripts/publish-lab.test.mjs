@@ -4,7 +4,26 @@ import { readFile, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { setTimeout } from "node:timers/promises";
-import { generatedDirectory, heroFile, homeFile, prepareSite, publishMarkdown, sourceFile } from "./publish-lab.mjs";
+import { generatedDirectory, getSiteBase, heroFile, homeFile, prepareSite, publishMarkdown, sourceFile } from "./publish-lab.mjs";
+
+test("supports project paths and root hosting, including an empty deployment base path", () => {
+  for (const [input, expected] of [
+    [undefined, "/ignite26-LAB740/"],
+    ["", "/"],
+    ["/", "/"],
+    ["/ignite26-LAB740", "/ignite26-LAB740/"],
+    ["/ignite26-LAB740/", "/ignite26-LAB740/"],
+    ["/workshop", "/workshop/"],
+  ]) {
+    assert.equal(getSiteBase(input), expected);
+  }
+});
+
+test("rejects a domain or relative path as the deployment base path", () => {
+  for (const input of ["https://example.com", "//example.com", "ignite26-LAB740"]) {
+    assert.throws(() => getSiteBase(input), /PAGES_BASE_PATH/);
+  }
+});
 
 test("converts the lab's Copilot link into a normal Markdown link", () => {
   const { markdown } = publishMarkdown("Open +++https://m365.cloud.microsoft/chat+++");
