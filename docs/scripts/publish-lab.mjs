@@ -24,7 +24,31 @@ export function getSiteBase(basePath = "/ignite26-LAB740") {
 
 export function publishMarkdown(source) {
   const images = new Set();
-  let markdown = source.replace(
+  const newline = source.includes("\r\n") ? "\r\n" : "\n";
+  let fence;
+  let markdown = source.replace(/^.*$/gm, (line) => {
+    const marker = line.match(/^[ \t]*(`{3,}|~{3,})(.*)$/);
+    if (marker) {
+      const [, delimiter, suffix] = marker;
+      if (!fence) {
+        fence = delimiter;
+      } else if (
+        delimiter[0] === fence[0] &&
+        delimiter.length >= fence.length &&
+        suffix.trim() === ""
+      ) {
+        fence = undefined;
+      }
+      return line;
+    }
+    return fence ? line : line
+      .replace(/^([ \t]*\d+\.[ \t]+)\[ \][ \t]+/, "$1")
+      .replace(
+        /^([ \t]*>[ \t]*)\[!Hint\](?:[ \t]+(.*))?$/i,
+        (_, quote, text) => `${quote}[!TIP]${text ? `${newline}${quote}${text}` : ""}`,
+      );
+  });
+  markdown = markdown.replace(
     /\+\+\+(https?:\/\/[^\s+]+)\+\+\+/g,
     (_, url) => `[${url}](${url})`,
   );

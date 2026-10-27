@@ -3,17 +3,22 @@
 In this workshop, you will build a strategic partner agent that helps protect your time, amplify your voice, sharpen priorities, challenge assumptions, and turn strategy into clear action. You will ground the agent in your Human Persona and configure it to reflect your values and working style.
 
 > [!NOTE]
-> These instructions were created for Microsoft Ignite 2026. Feel free to follow them afterward using your own Microsoft 365 work account. Wherever the instructions refer to a provided account or sample persona, use your own account, name, and role. Use your available work content in place of the sample data, and your document's filename rather than the examples shown. Skip the workshop-only environment setup. You'll need access to Microsoft 365 Copilot and Agent Builder; available features depend on your organization's settings.
+> These instructions were created for Microsoft Ignite 2026. Feel free to follow them afterward using your own Microsoft 365 work account. Wherever the instructions refer to the **NestorW** workshop account or sample persona, use your own account, name, and role. Use your available work content in place of the sample data, and your document's filename rather than the examples shown. Skip the workshop-only environment setup. You'll need access to Microsoft 365 Copilot and Agent Builder; available features depend on your organization's settings.
 
 ## Step 1: Create your Human Persona
 
 The Human Persona helps your agent understand your values, goals, boundaries, communication style, and definition of success.
 
-Instead of answering the questions from scratch, ask Microsoft 365 Copilot to use the provided account's sample work context to answer them and create a Word document.
+Instead of answering the questions from scratch, ask Microsoft 365 Copilot to use the default **NestorW** workshop account's sample work context to answer them and create a Human Persona Word document for **Nestor W**.
 
-1. Navigate to +++https://m365.cloud.microsoft/chat+++
-1. In Microsoft 365 Copilot, start a new chat while signed in with the provided account. If a **Work** option is available, select it so Copilot can use work sources.
-1. Copy and run the entire prompt below:
+1. [ ] If you havent navigated to **Microsoft 365 Copilot Chat**, open a new tab in your browser and navigate to:  +++https://m365.cloud.microsoft/chat+++
+1. [ ] In Microsoft 365 Copilot Chat, start a new chat while signed in with the default **NestorW** workshop account.
+1. [ ] Copy and run the entire prompt below:
+
+   > [!NOTE]
+   > Running this prompt uses **Nestor W's Work context** from the **NestorW** workshop account, **not your own work context**. In the prompt, "I," "me," and "my" refer to Nestor W.
+
+   > [!Hint] For long prompts like this one, use the code box's **Copy** button instead of typing the prompt manually. Paste the full prompt into Microsoft 365 Copilot Chat before sending it.
 
    ```text
    Context
@@ -36,8 +41,8 @@ Instead of answering the questions from scratch, ask Microsoft 365 Copilot to us
    Writing Instructions
    For each question:
 
-   - Target 5–10 sentences per question (4–8 if needed for clarity and to avoid redundancy). The total character limit takes priority over these sentence targets. Where evidence is insufficient, use a brief statement of the gap rather than padding the answer.
-   - Write in first person (“I”).
+   - Target 5-10 sentences per question (4-8 if needed for clarity and to avoid redundancy). The total character limit takes priority over these sentence targets. Where evidence is insufficient, use a brief statement of the gap rather than padding the answer.
+   - Write in first person ("I").
    - Focus only on content relevant to that specific question.
    - Highlight my experience, strengths, leadership style, and impact only as they relate to that question.
    - Maintain a consistent, professional, and authentic voice.
@@ -65,31 +70,31 @@ Instead of answering the questions from scratch, ask Microsoft 365 Copilot to us
    10. What is my preferred tone and workstyle for all work outputs?
    ```
 
-3. Copilot automatically creates the Word document. Open it and review all ten answers. Check that the name and role match the account you selected from the [workshop account table in Lab 00](Lab00.md#choose-and-sign-in-with-a-workshop-account). You are not expected to verify the sample user's team, work history, or source files.
-4. Keep the automatically generated filename or, if you prefer, open the document in Word and rename it to something more identifiable, such as `AlexW-Human-Persona.docx`. Make a note of the filename so you can find the document when you add it as knowledge in Step 5.
+1. [ ] Copilot automatically creates the Word document. Open it and review all ten answers. Check that the name and role describe **Nestor W**, the person represented by the **NestorW** workshop account, rather than you. You are not expected to verify Nestor W's team, work history, or source files.
+1. [ ] Keep the automatically generated filename or, if you prefer, open the document in Word and rename it to something more identifiable, such as `NestorW-Human-Persona.docx`. Make a note of the filename so you can find the document when you add it as knowledge in Step 5.
 
 > **Check:** Your Human Persona document contains all ten questions with an answer or an explicit evidence gap under each one, and you have noted its filename for Step 5.
 >
-> **If you get stuck:** If Copilot cannot access work sources or create the Word document, confirm that you are signed in with the provided account and ask a proctor for help. 
+> **If you get stuck:** If Copilot cannot access work sources or create the Word document, confirm that you are signed in with the **NestorW** workshop account and ask a proctor for help.
 
 > [!TIP]
 > When you repeat this workshop with your own work account, use the same prompt to create your own Human Persona. Review and refine it before adding it as agent knowledge, especially any inferred values, motivations, or work preferences.
 
 ## Step 2: Open Agent Builder
 
-1. In Microsoft 365 Copilot, select **Agents** from the left navigation.
-2. Select **Create agent** or **New agent**.
+1. [ ] In Microsoft 365 Copilot, select **Agents** from the left navigation.
+1. [ ] Select **Create agent** or **New agent**.
 
    ![Microsoft 365 Copilot with Agents and Create agent highlighted.](../instructions/media/create_agent.jpg)
 
-3. If Agent Builder opens with a prompt asking what you want to build, select **Skip** to configure the agent yourself.
+1. [ ] If Agent Builder opens with a prompt asking what you want to build, select **Skip** to configure the agent yourself.
 
    ![Agent Builder welcome screen with Skip highlighted.](../instructions/media/skip_to_configure.jpg)
 
 ## Step 3: Name and describe your agent
 
-1. In the agent configuration, enter **Atlas** as the name. You can choose a different, unique name for your agent—be creative and have fun with it.
-2. In the **Description** box, replace `[Your Name]` and `[Title]` with the name and title from your reviewed Human Persona, then paste. In the workshop, these belong to the person represented by the provided account:
+1. [ ] In the agent configuration, enter **Atlas** as the name. You can choose a different, unique name for your agent-be creative and have fun with it.
+1. [ ] In the **Description** box, replace `[Your Name]` and `[Title]` with the name and title from your reviewed Human Persona, then paste. In the workshop, use **Nestor W** and the title from that persona, not your own name and title:
 
    ```text
    The AI Strategic Partner for [Your Name], [Title]. A leadership operating system designed to protect my time, amplify my voice, sharpen priorities, challenge assumptions, and help turn strategy into clear action. This is not a task bot or content factory. It is a trusted thinking partner grounded in my values, goals, boundaries, and working style.
@@ -97,13 +102,13 @@ Instead of answering the questions from scratch, ask Microsoft 365 Copilot to us
 
    ![Agent Builder with the new agent name, description, and instructions fields.](../instructions/media/new_agent.jpg)
 
-3. To change the icon, select the icon picture. Choose **Generate** to create an icon or upload an image. This step is optional.
+1. [ ] **Optional:** Give your digital employee a visual persona by changing its icon. Select the icon picture, then choose **Generate** to create an icon or upload an image. You can also keep the default icon.
 
    ![Agent Builder icon picker.](../instructions/media/agent-builder-icon-picker.jpg)
 
 ## Step 4: Add the agent instructions
 
-The instructions define how your agent thinks, acts, and makes decisions. Replace `[AGENT NAME]` with your agent's name and `[YOUR NAME]` with the name from your reviewed Human Persona, then copy the entire block into the **Instructions** box.
+The instructions define how your agent thinks, acts, and makes decisions. Replace `[AGENT NAME]` with your agent's name and `[YOUR NAME]` with the name from your reviewed Human Persona (**Nestor W** in this workshop), then copy the entire block into the **Instructions** box.
 
 ```text
 You are [AGENT NAME], the AI Strategic Partner to [YOUR NAME]. You are not a virtual assistant, chatbot, or task manager. You are a strategic thinker, business analyst, leadership advisor, and execution partner.
@@ -142,10 +147,10 @@ Use my Human Persona and the files I provide as the source of truth for how I wo
 
 ### Add your Human Persona
 
-1. In the **Knowledge** section, select **Add knowledge**.
-2. In the search box, enter the filename you noted in Step 1.
-3. Select your Human Persona Word document from the search results to add it as knowledge.
-4. Wait until the file name appears in the knowledge list.
+1. [ ] In the **Knowledge** section, select **Add knowledge**.
+1. [ ] In the search box, enter the filename you noted in Step 1.
+1. [ ] Select your Human Persona Word document from the search results to add it as knowledge.
+1. [ ] Wait until the file name appears in the knowledge list.
 
    ![Agent Builder Knowledge area with Add knowledge and a filename search highlighted, showing a matching Human Persona document.](../instructions/media/add_knowledge.jpg)
 
@@ -158,17 +163,24 @@ Use my Human Persona and the files I provide as the source of truth for how I wo
 
 ### Choose what your agent can read
 
-1. Turn on the Microsoft 365 sources you want your agent to use, such as your email, Teams chats and meetings, and OneDrive files.
+1. [ ] Turn on **Cloud Files**.
+1. [ ] Turn on **Outlook**.
+1. [ ] Turn on **Teams**.
 
    > [!NOTE]
-   > The provided workshop account has pre-populated sample data available through Work IQ. Use the work sources available to that account to ground your agent in the same sample context used to create the Human Persona. This is not your personal work history. If you repeat the workshop with your own work account, choose sources appropriate to your role and your organization's data policies.
+   > The **NestorW** workshop account has pre-populated sample data available through Work IQ. Use Nestor W's work sources to ground your agent in the same sample context used to create the Human Persona. This is not your personal work history. If you repeat the workshop with your own work account, choose sources appropriate to your role and your organization's data policies.
 
-2. For a private strategic partner, leave **Web search** off unless you need it.
-3. If available, turn on **Reference org charts and profile updates**.
+1. [ ] Leave **Copilot connectors** off initially.
+1. [ ] Leave **Web Search** off initially to keep the workshop focused on work sources and avoid confusing external results.
+1. [ ] If available, turn on **Reference org charts and profile updates**.
 
-> **Check:** The selected sources appear in the Knowledge area.
+> **Check:** **Cloud Files**, **Outlook**, and **Teams** are on. **Copilot connectors** and **Web Search** are off.
 >
 > **Note:** More data is not always better. Begin with the Human Persona and a small set of trusted sources.
+
+### Skip Skills for this workshop
+
+Skip the **Skills** section for this workshop. Skills provide additional functionality you can explore later; you do not need to configure them to complete the lab.
 
 ## Step 6: Add suggested prompts
 
@@ -213,19 +225,19 @@ Check that the response uses your Human Persona and clearly separates facts from
 
 ## Step 8: Create and pin your agent
 
-1. Select **Create** in the top-right corner.
+1. [ ] Select **Create** in the top-right corner.
 
    ![Agent Builder with the Create button highlighted.](../instructions/media/create_agent.jpg)
 
-2. Wait for the success message, then select **X** in the top-right corner.
+1. [ ] Wait for the success message, then select **X** in the top-right corner.
 
    ![Agent created confirmation with the close button highlighted.](../instructions/media/close_success_window.jpg)
 
-3. In **Agents**, find Atlas, select its three-dot menu, and then select **Pin**.
+1. [ ] In **Agents**, find Atlas, select its three-dot menu, and then select **Pin**.
 
    ![Atlas in the Agents list with the Pin option highlighted.](../instructions/media/pin_agent.jpg)
 
-4. Confirm Atlas appears in the pinned list in the left navigation.
+1. [ ] Confirm Atlas appears in the pinned list in the left navigation.
 
    ![Atlas listed in the pinned agents.](../instructions/media/pinned.jpg)
 
@@ -252,4 +264,4 @@ Coach your agent by telling it what worked and what you would like it to do diff
 | The agent provides too much information | Remove unrelated sources and ask for concise answers with one next step first. |
 
 > [!NOTE] Remember
-> You did not “install” a perfect employee. You onboarded a new teammate. Correct it, praise what works, and update the Human Persona as you grow.
+> You did not "install" a perfect employee. You onboarded a new teammate. Correct it, praise what works, and update the Human Persona as you grow.

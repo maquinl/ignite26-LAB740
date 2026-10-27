@@ -6,51 +6,30 @@ For this workshop, you will use a provided user account with pre-populated sampl
 
 At the end of the workshop, we will share a link to these instructions so you can revisit them and, if you wish, repeat the workshop with your own work account.
 
-## Sign in to the virtual machine
+## Step 1: Sign in to the virtual machine
 
-Start by signing in to the virtual machine using the credentials below:
+1. [ ] Start by signing in to the virtual machine using the credentials below:
 
-- **Username:** +++@lab.VirtualMachine(Win11-Pro-Base).Username+++
-- **Password:** +++@lab.VirtualMachine(Win11-Pro-Base).Password+++
+   - **Username:** +++@lab.VirtualMachine(Win11-Pro-Base).Username+++
+   - **Password:** +++@lab.VirtualMachine(Win11-Pro-Base).Password+++
 
-## Open Microsoft 365 Copilot
+> [!NOTE]
+> Text formatted as an +++example+++ represents type text. Clicking on this text will automatically insert it to prevent any typing errors.
 
-In the virtual machine, open Microsoft Edge and go to:
+## Step 2: Open Microsoft 365 Copilot
 
-+++https://m365.cloud.microsoft/chat+++
+1. [ ] Once on the desktop page, open Microsoft Edge.
+2. [ ] Navigate to the follow URL to open Microsoft 365 Copilot: +++https://m365.cloud.microsoft/chat+++
 
-## Choose and sign in with a workshop account
+## Step 3: Sign-in with a workshop account
 
-You can use **Alex Wilber (`AlexW`)**, the default account, or optionally choose the account whose role most closely matches yours.
+1. [ ] Once prompted, sign-in with the following user details:
 
-| Name | User alias | Role |
-| --- | --- | --- |
-| Alex Wilber | `AlexW` | Marketing |
-| Allan Deyoung | `AllanD` | IT Admin |
-| Diego Siciliani | `DiegoS` | HR Manager |
-| Isaiah Langer | `IsaiahL` | Sales |
-| Joni Sherman | `JoniS` | Paralegal |
-| Lynne Robbins | `LynneR` | Planner (Retail) |
-| Megan Bowen | `MeganB` | Marketing Manager |
-| Nestor Wilke | `NestorW` | Director |
-| Patti Fernandez | `PattiF` | Exec Management |
+   - **Username:** +++NestorW@@lab.CloudCredential(WWLM365E7).TenantName+++
+   - **Temporary access pass:** +++@lab.Variable(TAP)+++
 
-Sign in with the credentials below. The username uses the default alias, `AlexW`, followed by your assigned tenant domain:
-
-- **Username:** +++AlexW@@lab.CloudCredential(WWLM365E7).TenantName+++
-- **Password:** +++@lab.CloudCredential(WWLM365E7).UserPassword+++
-
-To use a different account, copy its **User alias** from the table. Paste the default username into the sign-in field, then replace only the leading `AlexW` with your chosen alias. Keep the `@` and tenant domain unchanged.
-
-For example, to use **Patti Fernandez**, replace `AlexW` with `PattiF`. The resulting username is:
-
-+++PattiF@@lab.CloudCredential(WWLM365E7).TenantName+++
-
-> [!TIP]
-> If the sign-in page asks for a temporary access pass, use:
+> [!Help] If the sign-in page asks for a password, use:
 >
-> **Temporary access pass:** +++@lab.Variable(TAP)+++
-
-Use the same selected account for the rest of the workshop. Your Human Persona and strategic partner will reflect that account's sample work context.
+> **Password:** +++@lab.CloudCredential(WWLM365E7).UserPassword+++
 
 When you are signed in, select **Next** to continue to the Workshop instructions.
