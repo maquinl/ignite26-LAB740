@@ -37,6 +37,64 @@ test("removes the dependency on the Lab00 account table", () => {
   assert.equal(markdown, "Check the account you are using.");
 });
 
+test("removes Skillable step checkboxes while preserving numbering, indentation, and line endings", () => {
+  const source = [
+    "1. [ ] First step.",
+    "2. [ ] Second step.",
+    "",
+    "   Additional details.",
+    "   1. [ ] Nested step.",
+    "10. [ ] Last step, with [ ] in its text.",
+    "Keep [ ] in ordinary text.",
+  ].join("\r\n");
+  const { markdown } = publishMarkdown(source);
+  assert.equal(markdown, [
+    "1. First step.",
+    "2. Second step.",
+    "",
+    "   Additional details.",
+    "   1. Nested step.",
+    "10. Last step, with [ ] in its text.",
+    "Keep [ ] in ordinary text.",
+  ].join("\r\n"));
+});
+
+test("converts Skillable hints into website tips while preserving text, indentation, and line endings", () => {
+  const text = "Use the code box's **Copy** button.";
+  for (const newline of ["\n", "\r\n"]) {
+    const expected = [
+      "1. Copy the prompt.",
+      "",
+      "   > [!TIP]",
+      `   > ${text}`,
+    ].join(newline);
+    for (const hint of [
+      [`   > [!Hint] ${text}`],
+      ["   > [!Hint]", `   > ${text}`],
+    ]) {
+      const source = ["1. [ ] Copy the prompt.", "", ...hint].join(newline);
+      assert.equal(publishMarkdown(source).markdown, expected);
+    }
+  }
+});
+
+test("preserves checkbox and hint examples inside fenced prompt and code blocks", () => {
+  for (const delimiter of ["```", "~~~"]) {
+    const prompt = [
+      `   ${delimiter}text`,
+      "1. [ ] Keep this prompt step.",
+      delimiter[0].repeat(2),
+      "2. [ ] This shorter marker does not close the block.",
+      delimiter === "```" ? "~~~" : "```",
+      "3. [ ] A different marker does not close it either.",
+      "> [!Hint] Keep this literal hint example.",
+      `   ${delimiter}${delimiter[0]}`,
+    ].join("\n");
+    const { markdown } = publishMarkdown(`1. [ ] Before.\n\n${prompt}\n\n1. [ ] After.`);
+    assert.equal(markdown, `1. Before.\n\n${prompt}\n\n1. After.`);
+  }
+});
+
 test("publishes only referenced screenshots and deduplicates repeated images", () => {
   const { markdown, images } = publishMarkdown(
     "![First](../instructions/media/agent.jpg)\n![Again](../instructions/media/agent.jpg)",
@@ -75,6 +133,7 @@ test("preserves every prompt and all nine workshop steps from the actual source"
   assert.deepEqual(steps(markdown), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
   assert.ok(images.length > 0);
   assert.doesNotMatch(markdown, /Lab00\.md|@lab\.|\+\+\+/);
+  assert.doesNotMatch(markdown, /^\d+\.[ \t]+\[ \]/m);
 });
 
 test("generates separate home and workshop pages without modifying the Skillable source", async () => {
