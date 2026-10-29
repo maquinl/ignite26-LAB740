@@ -25,7 +25,11 @@ npm --prefix docs run docs:build
 npm --prefix docs run docs:preview
 ```
 
-The build copies the landing page and Copilot hero image, converts lab-only URL formatting in the workshop, removes its link to the Lab00 account table, and copies only screenshots referenced by Lab01. Skillable's `[ ]` markers are removed from numbered steps on the website, leaving the numbered instructions intact. Skillable `[!Hint]` blocks are converted to VitePress tips. The Skillable source and all fenced prompt text are preserved. Missing images or unhandled lab-only references fail the build.
+The build copies the landing page and Copilot hero image, converts lab-only URL formatting in the workshop, removes its link to the Lab00 account table, and copies only screenshots referenced by Lab01. Skillable's `[ ]` markers are removed from numbered steps on the website, leaving the numbered instructions intact. Skillable `[!Hint]` blocks are converted to VitePress tips. Standalone `===` page breaks are omitted from the website. The Skillable source and all fenced prompt text are preserved. Missing images or unhandled lab-only references fail the build.
+
+Write Skillable callouts as `> [!note] Note text` or `> [!hint] Hint text`, using lowercase markers and keeping the body on the same line. Use notes for context and checks, and hints for tips and help. Inside the lab's numbered tasks, indent these lines four spaces. Continue additional paragraphs in the same callout with a quoted blank line and the same indentation. Keep section-wide guidance unindented so it does not become part of the preceding task. Website publishing converts these to VitePress note and tip blocks.
+
+Suggested prompts use a two-column **Title** / **Prompt** table with `+++title+++` (type into the VM) and `++prompt++` (copy to clipboard) in Skillable. Website publishing turns each row into a heading and a full-width text code block with a Copy button. Escape literal pipes inside table cells as `\|`.
 
 Generated content, cache, and output stay under `.vitepress/` and are ignored by Git.
 
