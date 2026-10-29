@@ -5,6 +5,7 @@ In this workshop, you will build a strategic partner agent that helps protect yo
 > [!note] These instructions were created for Microsoft Ignite 2026. Feel free to follow them afterward using your own Microsoft 365 work account. Wherever the instructions refer to the **NestorW** workshop account or sample persona, use your own account, name, and role. Use your available work content in place of the sample data, and your document's filename rather than the examples shown. Skip the workshop-only environment setup. You'll need access to Microsoft 365 Copilot and Agent Builder; available features depend on your organization's settings.
 
 Select **Next** to continue to the Workshop instructions.
+
 ===
 
 ## Step 1: Create your Human Persona
@@ -81,6 +82,7 @@ Instead of answering the questions from scratch, ask Microsoft 365 Copilot to us
     > [!hint] When you repeat this workshop with your own work account, use the same prompt to create your own Human Persona. Review and refine it before adding it as agent knowledge, especially any inferred values, motivations, or work preferences.
 
 Select **Next** to continue to the Workshop instructions.
+
 ===
 
 ## Step 2: Open Agent Builder
@@ -95,6 +97,7 @@ Select **Next** to continue to the Workshop instructions.
    ![Agent Builder welcome screen with Skip highlighted.](../instructions/media/skip_to_configure.jpg)
 
 Select **Next** to continue to the Workshop instructions.
+
 ===
 
 ## Step 3: Name and describe your agent
@@ -113,6 +116,7 @@ Select **Next** to continue to the Workshop instructions.
    ![Agent Builder icon picker.](../instructions/media/agent-builder-icon-picker.jpg)
 
 Select **Next** to continue to the Workshop instructions.
+
 ===
 
 ## Step 4: Add the agent instructions
@@ -153,6 +157,7 @@ Use my Human Persona and the files I provide as the source of truth for how I wo
 ```
 
 Select **Next** to continue to the Workshop instructions.
+
 ===
 
 ## Step 5: Add knowledge sources
@@ -193,6 +198,7 @@ Select **Next** to continue to the Workshop instructions.
 Skip the **Skills** section for this workshop. Skills provide additional functionality you can explore later; you do not need to configure them to complete the lab.
 
 Select **Next** to continue to the Workshop instructions.
+
 ===
 
 ## Step 6: Add suggested prompts
@@ -210,6 +216,7 @@ Suggested prompts give you quick ways to start a conversation with your agent. I
 | +++Weekly reflection+++ | ++Review this week. What created value? What was noise? What should I stop, start, continue, delegate, or protect next week? Keep facts separate from your recommendations.++ |
 
 Select **Next** to continue to the Workshop instructions.
+
 ===
 
 ## Step 7: Create and pin your agent
@@ -235,6 +242,7 @@ Select **Next** to continue to the Workshop instructions.
    ![Atlas listed in the pinned agents.](../instructions/media/pinned.jpg)
 
 Select **Next** to continue to the Workshop instructions.
+
 ===
 
 ## Step 8: Start a coaching session
@@ -250,6 +258,7 @@ Try these questions in your first conversation:
 Coach your agent by telling it what worked and what you would like it to do differently.
 
 Select **Next** to continue to the Workshop instructions.
+
 ===
 
 ## Step 9: Edit your agent
@@ -269,6 +278,7 @@ Edit your agent at any time
     ![Update agent confirmation with the Update button highlighted.](../instructions/media/update-agent.png)
 
 Congratulations- you have completed the workshop.
+
 ===
 
 ## Troubleshooting
