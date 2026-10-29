@@ -275,7 +275,7 @@ Edit your agent at any time
 
 1. [ ] Select **Update** to save your changes. Then test the agent to ensure it behaves as expected.
 
-    ![Update agent confirmation with the Update button highlighted.](../instructions/media/update-agent.png)
+    ![Update agent confirmation with the Update button highlighted.](../instructions/media/Update-agent.png)
 
 Congratulations- you have completed the workshop.
 
