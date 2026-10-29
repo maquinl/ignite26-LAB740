@@ -78,7 +78,190 @@ test("converts Skillable hints into website tips while preserving text, indentat
   }
 });
 
-test("preserves checkbox and hint examples inside fenced prompt and code blocks", () => {
+test("converts lowercase Skillable notes without changing GitHub alert titles", () => {
+  for (const newline of ["\n", "\r\n"]) {
+    const source = [
+      "1. [ ] Copy the prompt.",
+      "",
+      "    > [!note] Keep the **original** context.",
+      "",
+      "> [!NOTE] Remember",
+      "> Keep this alert title.",
+    ].join(newline);
+    const expected = [
+      "1. Copy the prompt.",
+      "",
+      "    > [!NOTE]",
+      "    > Keep the **original** context.",
+      "",
+      "> [!NOTE] Remember",
+      "> Keep this alert title.",
+    ].join(newline);
+    assert.equal(publishMarkdown(source).markdown, expected);
+  }
+});
+
+test("preserves continuation paragraphs within task-scoped Skillable callouts", () => {
+  for (const newline of ["\n", "\r\n"]) {
+    for (const [sourceType, publishedType] of [["note", "NOTE"], ["hint", "TIP"]]) {
+      const source = [
+        "1. [ ] Add knowledge.",
+        "",
+        `    > [!${sourceType}] First paragraph.`,
+        "    >",
+        "    >**If you get stuck:** Keep this advice in the same callout.",
+      ].join(newline);
+      const expected = [
+        "1. Add knowledge.",
+        "",
+        `    > [!${publishedType}]`,
+        "    > First paragraph.",
+        "    >",
+        "    >**If you get stuck:** Keep this advice in the same callout.",
+      ].join(newline);
+      assert.equal(publishMarkdown(source).markdown, expected);
+    }
+  }
+});
+
+test("uses verified Skillable syntax for both opening task callouts", async () => {
+  const source = await readFile(sourceFile, "utf8");
+  assert.match(source, /^ {4}> \[!note\] Running this prompt uses[^\r\n]+$/m);
+  assert.match(source, /^ {4}> \[!hint\] For long prompts like this one,[^\r\n]+$/m);
+  const { markdown } = publishMarkdown(source);
+  assert.match(markdown, /^ {4}> \[!NOTE\]\r?\n {4}> Running this prompt uses[^\r\n]+$/m);
+  assert.match(markdown, /^ {4}> \[!TIP\]\r?\n {4}> For long prompts like this one,[^\r\n]+$/m);
+});
+
+test("uses consistent inline callouts and correct task or section indentation throughout the lab", async () => {
+  const source = await readFile(sourceFile, "utf8");
+  const directives = [...source.matchAll(/^[ \t]*>[ \t]*\[![^\]]+\][^\r\n]*$/gm)];
+  const callouts = [...source.matchAll(/^([ \t]*)> \[!(note|hint)\] ([^\r\n]+)$/gm)];
+  assert.ok(callouts.length > 0);
+  assert.equal(callouts.length, directives.length);
+  const taskCallouts = [
+    "Running this prompt uses",
+    "For long prompts like this one,",
+    "**Check:** Your Human Persona document contains",
+    "**If you get stuck:** If Copilot cannot access",
+    "When you repeat this workshop",
+    "If you saved the Word document locally,",
+    "**Check:** Your Human Persona document appears",
+    "The **NestorW** workshop account has pre-populated",
+    "**Check:** **Cloud Files**, **Outlook**, and **Teams** are on.",
+  ];
+  for (const [, indentation, , text] of callouts) {
+    const inTask = taskCallouts.some((prefix) => text.startsWith(prefix));
+    assert.equal(indentation, inTask ? "    " : "", `Incorrect callout indentation: ${text}`);
+  }
+  const { markdown } = publishMarkdown(source);
+  const published = [...markdown.matchAll(/^([ \t]*)> \[!(NOTE|TIP)\]\r?\n\1> ([^\r\n]+)$/gm)];
+  assert.deepEqual(
+    published.map(([, indentation, type, text]) => [indentation, type, text]),
+    callouts.map(([, indentation, type, text]) => [
+      indentation, type === "note" ? "NOTE" : "TIP", text,
+    ]),
+  );
+});
+
+test("removes standalone Skillable page breaks while preserving other equals signs and line endings", () => {
+  for (const newline of ["\n", "\r\n"]) {
+    const source = [
+      "Introduction.",
+      "",
+      "===",
+      "",
+      "## Step 1: First",
+      "",
+      "=== \t",
+      "",
+      "## Step 2: Second",
+      "",
+      "Keep === in text.",
+      "`===`",
+      "====",
+      "    ===",
+    ].join(newline);
+    const { markdown } = publishMarkdown(source);
+    assert.equal(markdown, [
+      "Introduction.",
+      "",
+      "",
+      "",
+      "## Step 1: First",
+      "",
+      "",
+      "",
+      "## Step 2: Second",
+      "",
+      "Keep === in text.",
+      "`===`",
+      "====",
+      "    ===",
+    ].join(newline));
+  }
+});
+
+test("publishes Skillable suggested prompt rows as headings and full-width code blocks", () => {
+  const entries = [
+    { title: "The morning briefing", prompt: "Hey Atlas, review my calendar and emails." },
+    { title: "Meeting prep", prompt: "Help with [topic], **literal** formatting, and C++." },
+    {
+      title: "Weekly | reflection",
+      prompt: "Compare stop | start | continue. Keep ``` intact.",
+      codeFence: "````",
+    },
+  ];
+  for (const newline of ["\n", "\r\n"]) {
+    const table = [
+      "| Title | Prompt |",
+      "| --- | --- |",
+      ...entries.map(({ title, prompt }) =>
+        `| +++${title.replace(/\|/g, "\\|")}+++ | ++${prompt.replace(/\|/g, "\\|")}++ |`,
+      ),
+    ].join(newline);
+    const expected = entries.map(({ title, prompt, codeFence = "```" }) =>
+      [`### ${title}`, "", `${codeFence}text`, prompt, codeFence].join(newline),
+    ).join(newline + newline);
+    assert.equal(publishMarkdown(table).markdown, expected);
+  }
+});
+
+test("leaves ordinary Markdown tables unchanged", () => {
+  for (const table of [
+    "| Title | Prompt |\n| --- | --- |\n| Example | Plain prompt text. |",
+    "| Issue | Fix |\n| --- | --- |\n| Missing data | Ask for help. |",
+  ]) {
+    assert.equal(publishMarkdown(table).markdown, table);
+  }
+});
+
+test("does not interpret suggested prompt table examples inside code fences", () => {
+  for (const delimiter of ["```", "~~~"]) {
+    const source = [
+      `${delimiter}markdown`,
+      "| Title | Prompt |",
+      "| --- | --- |",
+      "| +++Example+++ | ++Copy this prompt.++ |",
+      delimiter,
+    ].join("\n");
+    assert.throws(() => publishMarkdown(source), /lab-only reference/);
+  }
+});
+
+test("rejects malformed or empty cells in Skillable suggested prompt tables", () => {
+  for (const row of [
+    "| +++Example+++ | Missing copy markers. |",
+    "| +++Example+++ | ++Unescaped | pipe.++ |",
+    "| +++ +++ | ++Copy this prompt.++ |",
+    "| +++Example+++ | ++ ++ |",
+  ]) {
+    const source = ["| Title | Prompt |", "| --- | --- |", row].join("\n");
+    assert.throws(() => publishMarkdown(source), /Suggested prompt table row 1/);
+  }
+});
+
+test("preserves checkbox, hint, and page-break examples inside fenced prompt and code blocks", () => {
   for (const delimiter of ["```", "~~~"]) {
     const prompt = [
       `   ${delimiter}text`,
@@ -87,7 +270,9 @@ test("preserves checkbox and hint examples inside fenced prompt and code blocks"
       "2. [ ] This shorter marker does not close the block.",
       delimiter === "```" ? "~~~" : "```",
       "3. [ ] A different marker does not close it either.",
+      "> [!note] Keep this literal note example.",
       "> [!Hint] Keep this literal hint example.",
+      "===",
       `   ${delimiter}${delimiter[0]}`,
     ].join("\n");
     const { markdown } = publishMarkdown(`1. [ ] Before.\n\n${prompt}\n\n1. [ ] After.`);
@@ -124,16 +309,40 @@ test("rejects unhandled lab links and credential tokens", () => {
   }
 });
 
-test("preserves every prompt and all nine workshop steps from the actual source", async () => {
+test("preserves every prompt and workshop step while removing Skillable page breaks from the actual source", async () => {
   const source = await readFile(sourceFile, "utf8");
   const { markdown, images } = publishMarkdown(source);
   const prompts = (text) => text.match(/^[ \t]*```text\r?\n[\s\S]*?^[ \t]*```/gm);
-  assert.deepEqual(prompts(markdown), prompts(source));
+  const newline = source.includes("\r\n") ? "\r\n" : "\n";
+  const expectedPrompts = [...source.matchAll(/^[ \t]*```text\r?\n[\s\S]*?^[ \t]*```/gm)]
+    .map((match) => ({ index: match.index, block: match[0] }));
+  const promptRows = [...source.matchAll(/^\| \+\+\+(.+?)\+\+\+ \| \+\+(.+?)\+\+ \|[ \t]*$/gm)];
+  assert.equal(promptRows.length, 3);
+  for (const row of promptRows) {
+    const title = row[1].replace(/\\\|/g, "|");
+    const prompt = row[2].replace(/\\\|/g, "|");
+    expectedPrompts.push({
+      index: row.index,
+      block: ["```text", prompt, "```"].join(newline),
+    });
+    assert.ok(markdown.includes(`### ${title}`));
+  }
+  expectedPrompts.sort((first, second) => first.index - second.index);
+  assert.deepEqual(prompts(markdown), expectedPrompts.map(({ block }) => block));
   const steps = (text) => [...text.matchAll(/^## Step (\d+):/gm)].map((match) => Number(match[1]));
-  assert.deepEqual(steps(markdown), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  const sourceSteps = steps(source);
+  assert.ok(sourceSteps.length > 0);
+  assert.deepEqual(sourceSteps, Array.from({ length: sourceSteps.length }, (_, index) => index + 1));
+  assert.deepEqual(steps(markdown), sourceSteps);
+  const pageBreakSteps = [...source.matchAll(/^===[ \t]*\r?\n\r?\n## Step (\d+):/gm)]
+    .map((match) => Number(match[1]));
+  assert.deepEqual(pageBreakSteps, sourceSteps);
+  assert.doesNotMatch(source, /^.*\S.*\r?\n===[ \t]*$/m, "Leave a blank line before each page break.");
+  assert.doesNotMatch(source, /^===[ \t]*\r?\n.*\S/m, "Leave a blank line after each page break.");
   assert.ok(images.length > 0);
   assert.doesNotMatch(markdown, /Lab00\.md|@lab\.|\+\+\+/);
   assert.doesNotMatch(markdown, /^\d+\.[ \t]+\[ \]/m);
+  assert.doesNotMatch(markdown, /^===[ \t]*$/m);
 });
 
 test("generates separate home and workshop pages without modifying the Skillable source", async () => {

@@ -22,12 +22,40 @@ export function getSiteBase(basePath = "/ignite26-LAB740") {
   return `${basePath.replace(/\/+$/, "")}/`;
 }
 
+function publishPromptTable(table, newline) {
+  const [header, separator, ...rows] = table.split(/\r?\n/);
+  if (
+    !/^\|[ \t]*Title[ \t]*\|[ \t]*Prompt[ \t]*\|[ \t]*$/i.test(header) ||
+    !separator ||
+    !/^\|[ \t]*:?-{3,}:?[ \t]*\|[ \t]*:?-{3,}:?[ \t]*\|[ \t]*$/.test(separator) ||
+    !rows.some((row) => /^\|[ \t]*\+\+\+/.test(row))
+  ) {
+    return table;
+  }
+  return rows.map((row, index) => {
+    const cells = row.match(
+      /^\|[ \t]*\+\+\+((?:\\\||[^|])+?)\+\+\+[ \t]*\|[ \t]*\+\+((?:\\\||[^|])+?)\+\+[ \t]*\|[ \t]*$/,
+    );
+    if (!cells || !cells[1].trim() || !cells[2].trim()) {
+      throw new Error(
+        `Suggested prompt table row ${index + 1} must have a +++title+++ and ++prompt++.`,
+      );
+    }
+    const title = cells[1].replace(/\\\|/g, "|");
+    const prompt = cells[2].replace(/\\\|/g, "|");
+    const codeFence = "`".repeat(
+      Math.max(3, ...[...prompt.matchAll(/`+/g)].map(([run]) => run.length + 1)),
+    );
+    return [`### ${title}`, "", `${codeFence}text`, prompt, codeFence].join(newline);
+  }).join(newline + newline);
+}
+
 export function publishMarkdown(source) {
   const images = new Set();
   const newline = source.includes("\r\n") ? "\r\n" : "\n";
   let fence;
-  let markdown = source.replace(/^.*$/gm, (line) => {
-    const marker = line.match(/^[ \t]*(`{3,}|~{3,})(.*)$/);
+  let markdown = source.replace(/^\|[^\r\n]*\|[ \t]*(?:\r?\n\|[^\r\n]*\|[ \t]*)+|^.*$/gm, (block) => {
+    const marker = block.match(/^[ \t]*(`{3,}|~{3,})(.*)$/);
     if (marker) {
       const [, delimiter, suffix] = marker;
       if (!fence) {
@@ -39,13 +67,21 @@ export function publishMarkdown(source) {
       ) {
         fence = undefined;
       }
-      return line;
+      return block;
     }
-    return fence ? line : line
+    if (!fence && block.startsWith("|")) {
+      return publishPromptTable(block, newline);
+    }
+    return fence ? block : block
+      .replace(/^===[ \t]*$/, "")
       .replace(/^([ \t]*\d+\.[ \t]+)\[ \][ \t]+/, "$1")
       .replace(
         /^([ \t]*>[ \t]*)\[!Hint\](?:[ \t]+(.*))?$/i,
         (_, quote, text) => `${quote}[!TIP]${text ? `${newline}${quote}${text}` : ""}`,
+      )
+      .replace(
+        /^([ \t]*>[ \t]*)\[!note\][ \t]+(.+)$/,
+        (_, quote, text) => `${quote}[!NOTE]${newline}${quote}${text}`,
       );
   });
   markdown = markdown.replace(

@@ -21,7 +21,7 @@ At the end of the workshop, we will share a link to these instructions so you ca
 1. [ ] Once on the desktop page, open Microsoft Edge.
 2. [ ] Navigate to the follow URL to open Microsoft 365 Copilot: +++https://m365.cloud.microsoft/chat+++
 
-## Step 3: Sign-in with a workshop account
+## Step 3: Sign into the workshop account
 
 1. [ ] Once prompted, sign-in with the following user details:
 
